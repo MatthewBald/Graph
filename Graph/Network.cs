@@ -258,5 +258,63 @@ namespace Graph
 				}
 			}
 		}
+
+		public int BFS()
+		{
+			int connectedComponents = 0;
+
+			if (_vertices == null || _edges == null)
+				return connectedComponents;
+
+			// Reset the labels of all Vertices/Edges to UNEXPLORED
+			_vertices.ForEach(v => v.SetLabel("UNEXPLORED"));
+			_edges.ForEach(e => e.SetLabel("UNEXPLORED"));
+
+			foreach (Vertex v in _vertices)
+			{
+				if (v.GetLabel() == "UNEXPLORED")
+				{
+					connectedComponents++;
+					BFS(v);
+				}
+			}
+
+			return connectedComponents;
+		}
+
+		public void BFS(Vertex v)
+		{
+			Queue<Vertex> vertexQueue = new Queue<Vertex>();
+
+			vertexQueue.Enqueue(v);
+			v.SetLabel("VISITED");
+
+			while (vertexQueue.Count != 0)
+			{
+				Vertex w = vertexQueue.Dequeue();
+
+				if (w.GetConnections().Count != 0)
+				{
+					foreach (Edge e in IncidentEdges(w))
+					{
+						if (e.GetLabel() == "UNEXPLORED")
+						{
+							Vertex u = Opposite(w, e);
+
+							if (u.GetLabel() == "UNEXPLORED")
+							{
+								e.SetLabel("DISCOVERY");
+								u.SetLabel("VISITED");
+								vertexQueue.Enqueue(u);
+							}
+							else
+							{
+								e.SetLabel("CROSS");
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
