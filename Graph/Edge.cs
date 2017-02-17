@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /**
- * The Edge class is used to describe a directed path between two vertices in a network.
- * It contains the two vertices it connects, vertex a is the sender and vertex
- * b is the receiver. It also contains a label that is used for Breadth and Depth 
- * first searches. 
+ * 
+ * 
+ *  
+ * 
  */
 namespace Graph
 {
+	/// <summary>
+	/// The Edge class is used to describe a directed path between two vertices in a network.
+	/// Contains the two vertices it connects, vertex a is the sender and vertex b is the receiver.
+	/// Also contains a label that is used for Breadth and Depth first searches. 
+	/// </summary>
 	class Edge : IEquatable<Edge>
 	{
 		private Vertex _vOne;

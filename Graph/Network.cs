@@ -17,6 +17,26 @@ namespace Graph
 			_edges = new List<Edge>();
 		}
 
+		public List<Vertex> GetVertices()
+		{
+			return _vertices;
+		}
+
+		public void SetVertices(List<Vertex> vertices)
+		{
+			_vertices = vertices;
+		}
+
+		public List<Edge> GetEdges()
+		{
+			return _edges;
+		}
+
+		public void SetEdges(List<Edge> edges)
+		{
+			_edges = edges;
+		}
+
 		/// <summary>
 		/// Searches the network for an edge with the same vertices as Edge e
 		/// </summary>
@@ -93,6 +113,11 @@ namespace Graph
 			return _edges.Remove(e) && _edges.Remove(e.Conjugate());
 		}
 
+		/// <summary>
+		/// Returns a List containing the Edges starting at Vertex v
+		/// </summary>
+		/// <param name="v"></param>
+		/// <returns></returns>
 		public List<Edge> IncidentEdges(Vertex v)
 		{
 			if (v.GetConnections() == null || v.GetConnections().Count == 0)
@@ -105,6 +130,11 @@ namespace Graph
 			return incidents;
 		}
 
+		/// <summary>
+		/// Returns a List containing the two Vertices at either end of Edge e
+		/// </summary>
+		/// <param name="e"></param>
+		/// <returns></returns>
 		public List<Vertex> EndVertices(Edge e)
 		{
 			if (e == null || e.GetVertexA() == null || e.GetVertexB() == null)
@@ -117,6 +147,116 @@ namespace Graph
 
 			return endPoints;
 		}
+		
+		/// <summary>
+		/// Returns whether Edge e is Directed or not
+		/// </summary>
+		/// <param name="e"></param>
+		/// <returns></returns>
+		public bool IsDirected(Edge e)
+		{
+			if (e == null)
+				return false;
 
+			int other = e.GetVertexA().GetConnections().Find(id => id == e.GetVertexB().GetId());
+
+			Edge conj = e.Conjugate();
+			
+			return (other == conj.GetVertexB().GetId());
+		}
+
+		/// <summary>
+		/// Returns the destination of a directed Edge e
+		/// </summary>
+		/// <param name="e"></param>
+		/// <returns></returns>
+		public Vertex Destination(Edge e)
+		{
+			if (e == null)
+				return null;
+
+			return e.GetVertexB();
+		}
+
+		/// <summary>
+		/// Returns the origin of a directed Edge e
+		/// </summary>
+		/// <param name="e"></param>
+		/// <returns></returns>
+		public Vertex Origin(Edge e)
+		{
+			if (e == null)
+				return null;
+
+			return e.GetVertexA();
+		}
+
+		/// <summary>
+		/// Returns the opposite Vertex of Vertex v on Edge e
+		/// </summary>
+		/// <param name="v"></param>
+		/// <param name="e"></param>
+		/// <returns></returns>
+		public Vertex Opposite(Vertex v, Edge e)
+		{
+			if (v == null || e == null)
+				return null;
+
+			if (e.GetVertexA().GetId() == v.GetId())
+				return GetVertex(e.GetVertexB().GetId());
+
+			else if (e.GetVertexB().GetId() == v.GetId())
+				return GetVertex(e.GetVertexA().GetId());
+
+			return null;
+		}
+
+
+		public bool AreAdjacent(Vertex v, Vertex w)
+		{
+			if (v == null || w == null)
+				return false;
+
+			foreach (int id in v.GetConnections())
+				if (id == w.GetId())
+					return true;
+
+			foreach (int id in w.GetConnections())
+				if (id == v.GetId())
+					return true;
+
+			return false;
+		}
+
+		public void DFS()
+		{
+			// Reset the labels of all Vertices/Edges to UNEXPLORED
+			_vertices.ForEach(v => v.SetLabel("UNEXPLORED"));
+			_edges.ForEach(e => e.SetLabel("UNEXPLORED"));
+
+			foreach (Vertex v in _vertices)
+				if (v.GetLabel() == "UNEXPLORED")
+					DFS(v);
+
+		}
+
+		public void DFS(Vertex v)
+		{
+			v.SetLabel("VISITED");
+
+			foreach (Edge e in IncidentEdges(v))
+			{
+				if (e.GetLabel() == "UNEXPLORED")
+				{
+					Vertex w = Opposite(v, e);
+					if (w.GetLabel() == "UNEXPLORED")
+					{
+						e.SetLabel("DISCOVERY");
+						DFS(w);
+					}
+					else e.SetLabel("BACK");
+				}
+			}
+		}
 	}
 }
