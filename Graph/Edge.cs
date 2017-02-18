@@ -1,11 +1,5 @@
 ﻿using System;
 
-/**
- * 
- * 
- *  
- * 
- */
 namespace Graph
 {
 	/// <summary>

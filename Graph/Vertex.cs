@@ -5,20 +5,20 @@ namespace Graph
 {
 	class Vertex : IEquatable<Vertex>
 	{
-		private int _id;
-		private List<int> _connections;
+		private string _id;
+		private List<string> _connections;
 		private string _label;
 		private Vertex _back;
 		
-		public Vertex(int id)
+		public Vertex(string id)
 		{
 			_id = id;
-			_connections = new List<int>();
+			_connections = new List<string>();
 			_label = "UNEXPLORED";
 			_back = null;
 		}
 		
-		public int GetId()
+		public string GetId()
 		{
 			return _id;
 		}
@@ -33,17 +33,17 @@ namespace Graph
 			_label = label;
 		}
 
-		public List<int> GetConnections()
+		public List<string> GetConnections()
 		{
 			return _connections;
 		}
 
-		public void SetConnections(List<int> connections)
+		public void SetConnections(List<string> connections)
 		{
 			_connections = connections;
 		}
 
-		public List<int> AddConnection(int connection)
+		public List<string> AddConnection(string connection)
 		{
 			_connections.Add(connection);
 			return _connections;

@@ -52,7 +52,7 @@ namespace Graph
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public Vertex GetVertex(int id)
+		public Vertex GetVertex(string id)
 		{
 			return _vertices.Find(x => x.Equals(id));
 		}
@@ -120,10 +120,10 @@ namespace Graph
 		/// <returns></returns>
 		public List<Edge> IncidentEdges(Vertex v)
 		{
-			if (v.GetConnections() == null || v.GetConnections().Count == 0)
-				return null;
-
 			List<Edge> incidents = new List<Edge>();
+
+			if (v.GetConnections() == null || v.GetConnections().Count == 0)
+				return incidents;
 
 			incidents.AddRange(_edges.FindAll(x => x.GetVertexA().GetId() == v.GetId()));
 
@@ -158,7 +158,7 @@ namespace Graph
 			if (e == null)
 				return false;
 
-			int other = e.GetVertexA().GetConnections().Find(id => id == e.GetVertexB().GetId());
+			string other = e.GetVertexA().GetConnections().Find(id => id == e.GetVertexB().GetId());
 
 			Edge conj = e.Conjugate();
 			
@@ -217,11 +217,11 @@ namespace Graph
 			if (v == null || w == null)
 				return false;
 
-			foreach (int id in v.GetConnections())
+			foreach (string id in v.GetConnections())
 				if (id == w.GetId())
 					return true;
 
-			foreach (int id in w.GetConnections())
+			foreach (string id in w.GetConnections())
 				if (id == v.GetId())
 					return true;
 
@@ -235,15 +235,22 @@ namespace Graph
 			_edges.ForEach(e => e.SetLabel("UNEXPLORED"));
 
 			foreach (Vertex v in _vertices)
+			{
 				if (v.GetLabel() == "UNEXPLORED")
+				{
 					DFS(v);
-
+				}	
+			}
 		}
 
 		public void DFS(Vertex v)
 		{
 			v.SetLabel("VISITED");
 
+			Console.WriteLine("");
+			Console.WriteLine(v.GetId());
+			Console.WriteLine(v.GetLabel());
+			
 			foreach (Edge e in IncidentEdges(v))
 			{
 				if (e.GetLabel() == "UNEXPLORED")
