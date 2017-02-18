@@ -37,6 +37,16 @@ namespace Graph
 			_edges = edges;
 		}
 
+		public void PrintVertices()
+		{
+			foreach(Vertex v in _vertices)
+			{
+				Console.WriteLine(v.GetId() + " with label: " + v.GetLabel());
+				Console.WriteLine("Connections: " + string.Join(", ", v.GetConnections()));
+				Console.WriteLine("");
+			}
+		}
+
 		/// <summary>
 		/// Searches the network for an edge with the same vertices as Edge e
 		/// </summary>
@@ -77,6 +87,7 @@ namespace Graph
 				return;
 			
 			_edges.Add(new Edge(v, w));
+			_vertices.Find(vert => vert.GetId() == v.GetId()).AddConnection(w.GetId());
 		}
 
 		/// <summary>
@@ -256,7 +267,7 @@ namespace Graph
 				if (e.GetLabel() == "UNEXPLORED")
 				{
 					Vertex w = Opposite(v, e);
-					if (w.GetLabel() == "UNEXPLORED")
+					if (w != null && w.GetLabel() == "UNEXPLORED")
 					{
 						e.SetLabel("DISCOVERY");
 						DFS(w);
@@ -308,7 +319,7 @@ namespace Graph
 						{
 							Vertex u = Opposite(w, e);
 
-							if (u.GetLabel() == "UNEXPLORED")
+							if (u != null && u.GetLabel() == "UNEXPLORED")
 							{
 								e.SetLabel("DISCOVERY");
 								u.SetLabel("VISITED");

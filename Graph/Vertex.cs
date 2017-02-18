@@ -54,7 +54,15 @@ namespace Graph
 			if (other == null)
 				return false;
 
-			return (_id == other._id);
+			return (_id == other.GetId());
+		}
+
+		public bool Equals(string id)
+		{
+			if (id == null)
+				return false;
+
+			return (_id == id);
 		}
 
 	}

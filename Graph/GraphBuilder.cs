@@ -23,14 +23,13 @@ namespace Graph
 						string line = sr.ReadLine();
 						string[] lineArr = line.Split(',');
 
-						Vertex a = new Vertex(lineArr[0]);
-						Vertex b = new Vertex(lineArr[1]);
-
-						Console.WriteLine(".");
-
-						_network.AddVertex(a);
-						_network.AddVertex(b);
-						_network.AddEdgeUndirected(a, b);
+						Vertex a = new Vertex(lineArr[0].Trim());
+						Vertex b = new Vertex(lineArr[1].Trim());
+						
+						if (_network.GetVertex(a.GetId()) == null) _network.AddVertex(a);
+						if (_network.GetVertex(b.GetId()) == null) _network.AddVertex(b);
+						if (_network.GetEdge(new Edge(a, b)) == null) _network.AddEdge(a, b);
+						
 					}
 				}
 			}
@@ -39,7 +38,9 @@ namespace Graph
 				Console.WriteLine(e.StackTrace);
 			}
 
-			_network.DFS();
+			//_network.PrintVertices();
+			int cComps = _network.BFS();
+			Console.WriteLine(cComps);
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Launcher
 	{
 		static void Main(string[] args)
 		{
-			GraphBuilder gb = new GraphBuilder("C:/Users/Matthew/Source/Repos/Graph/Graph/input.txt");
+			GraphBuilder gb = new GraphBuilder("input.txt");
 
 			Console.Read();
 		}
