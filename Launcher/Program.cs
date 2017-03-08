@@ -13,6 +13,7 @@ namespace Launcher
 		{
 			GraphBuilder gb = new GraphBuilder("input.txt");
 
+			Console.WriteLine("Execution completed. Press Enter to close.");
 			Console.Read();
 		}
 	}
